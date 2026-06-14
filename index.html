@@ -171,6 +171,37 @@
   .contact-card .k { font-size: 0.78rem; color: var(--muted); }
   .contact-card .v { font-weight: 700; font-size: 0.98rem; word-break: break-all; }
 
+  /* ===== Guestbook ===== */
+  .gb-form {
+    margin-top: 28px; max-width: 640px;
+    background: var(--bg); border: 1px solid var(--line);
+    border-radius: 14px; padding: 20px;
+  }
+  .gb-form input, .gb-form textarea {
+    width: 100%; font: inherit; color: var(--ink);
+    background: var(--white); border: 1px solid var(--line);
+    border-radius: 10px; padding: 11px 14px; margin-bottom: 12px;
+    transition: border-color 0.2s;
+  }
+  .gb-form input:focus, .gb-form textarea:focus { outline: none; border-color: var(--teal); }
+  .gb-form textarea { resize: vertical; }
+  .gb-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .gb-submit { cursor: pointer; border: none; }
+  .gb-submit:disabled { opacity: 0.6; cursor: default; }
+  .gb-status { font-size: 0.88rem; color: var(--muted); }
+  .gb-status.err { color: #e0564a; }
+  .gb-status.ok { color: var(--teal); }
+  .gb-list { margin-top: 32px; display: grid; gap: 14px; max-width: 640px; }
+  .gb-card {
+    background: var(--white); border: 1px solid var(--line);
+    border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow);
+  }
+  .gb-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+  .gb-name { font-weight: 700; color: var(--teal-dark); }
+  .gb-time { font-size: 0.78rem; color: var(--muted); flex: none; }
+  .gb-msg { color: var(--body-text); white-space: pre-wrap; word-break: break-word; }
+  .gb-empty { color: var(--muted); font-size: 0.95rem; }
+
   /* ===== Footer ===== */
   footer { text-align: center; padding: 34px 0; color: var(--muted); font-size: 0.85rem; }
 </style>
@@ -196,6 +227,7 @@
         <li><a href="#career">경력</a></li>
         <li><a href="#skills">스킬</a></li>
         <li><a href="#contact">연락처</a></li>
+        <li><a href="#guestbook">방명록</a></li>
       </ul>
       <button id="theme-toggle" type="button" aria-label="라이트/다크 모드 전환" title="라이트/다크 모드 전환">
         <span class="t-icon">🌙</span>
@@ -352,6 +384,29 @@
   </div>
 </section>
 
+<section id="guestbook" style="background:var(--white); border-top:1px solid var(--line);">
+  <div class="wrap">
+    <div class="section-tag">Guestbook</div>
+    <h2 class="section-title">방명록</h2>
+    <p style="color:var(--muted); max-width:560px;">
+      남기고 싶은 말을 자유롭게 적어주세요. 누구나 읽고 남길 수 있습니다.
+    </p>
+
+    <form id="gb-form" class="gb-form">
+      <input id="gb-name" type="text" maxlength="50" placeholder="이름" autocomplete="name" required />
+      <textarea id="gb-content" rows="3" maxlength="1000" placeholder="메시지를 남겨주세요" required></textarea>
+      <div class="gb-actions">
+        <span id="gb-status" class="gb-status" role="status" aria-live="polite"></span>
+        <button type="submit" class="btn btn-primary gb-submit">남기기</button>
+      </div>
+    </form>
+
+    <div id="gb-list" class="gb-list">
+      <p class="gb-empty">불러오는 중…</p>
+    </div>
+  </div>
+</section>
+
 <footer>
   © 2026 김수민 · Marketing Specialist. All rights reserved.
 </footer>
@@ -380,6 +435,111 @@
       }
       syncIcon();
     });
+  })();
+</script>
+
+<!-- ===== Guestbook: Supabase 연결 정보 + 라이브러리 + 로직 ===== -->
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  (function () {
+    var cfg = window.SUPABASE_CONFIG;
+    var listEl = document.getElementById("gb-list");
+    var form = document.getElementById("gb-form");
+    var statusEl = document.getElementById("gb-status");
+    var nameEl = document.getElementById("gb-name");
+    var contentEl = document.getElementById("gb-content");
+    var submitBtn = form.querySelector(".gb-submit");
+
+    function setStatus(msg, kind) {
+      statusEl.textContent = msg || "";
+      statusEl.className = "gb-status" + (kind ? " " + kind : "");
+    }
+
+    // config.js 누락 또는 라이브러리 로드 실패 시 안내
+    if (!cfg || !cfg.url || !cfg.anonKey || !window.supabase) {
+      listEl.innerHTML =
+        '<p class="gb-empty">방명록을 불러올 수 없습니다. config.js 설정을 확인하세요.</p>';
+      return;
+    }
+
+    var client = window.supabase.createClient(cfg.url, cfg.anonKey);
+
+    // XSS 방지용 이스케이프
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+
+    function fmt(iso) {
+      try {
+        return new Date(iso).toLocaleString("ko-KR", {
+          dateStyle: "medium",
+          timeStyle: "short",
+        });
+      } catch (e) {
+        return "";
+      }
+    }
+
+    function render(rows) {
+      if (!rows || !rows.length) {
+        listEl.innerHTML =
+          '<p class="gb-empty">아직 남겨진 메시지가 없습니다. 첫 메시지를 남겨보세요!</p>';
+        return;
+      }
+      listEl.innerHTML = rows
+        .map(function (r) {
+          return (
+            '<div class="gb-card">' +
+            '<div class="gb-head">' +
+            '<span class="gb-name">' + esc(r.name) + "</span>" +
+            '<span class="gb-time">' + fmt(r.created_at) + "</span>" +
+            "</div>" +
+            '<div class="gb-msg">' + esc(r.content) + "</div>" +
+            "</div>"
+          );
+        })
+        .join("");
+    }
+
+    async function load() {
+      var res = await client
+        .from("messages")
+        .select("name, content, created_at")
+        .order("created_at", { ascending: false })
+        .limit(100);
+      if (res.error) {
+        listEl.innerHTML =
+          '<p class="gb-empty">불러오기 실패: ' + esc(res.error.message) + "</p>";
+        return;
+      }
+      render(res.data);
+    }
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      var name = nameEl.value.trim();
+      var content = contentEl.value.trim();
+      if (!name || !content) {
+        setStatus("이름과 메시지를 모두 입력해주세요.", "err");
+        return;
+      }
+      setStatus("전송 중…");
+      submitBtn.disabled = true;
+      var res = await client.from("messages").insert({ name: name, content: content });
+      submitBtn.disabled = false;
+      if (res.error) {
+        setStatus("전송 실패: " + res.error.message, "err");
+        return;
+      }
+      contentEl.value = "";
+      setStatus("등록되었습니다. 감사합니다!", "ok");
+      load();
+    });
+
+    load();
   })();
 </script>
 

@@ -9,3 +9,9 @@ Thumbs.db
 
 # 의존성/생성물 (현재는 없지만 안전 차원)
 node_modules/
+
+# Supabase 연결 정보
+#  config.js 는 anon key(공개 키)만 담으므로 Vercel 배포를 위해 커밋함 (RLS가 데이터 보호)
+#  .env.local / .env 는 계속 커밋 금지
+.env.local
+.env
