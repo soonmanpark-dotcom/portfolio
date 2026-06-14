@@ -1,0 +1,11 @@
+# OS / 에디터
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Vercel 로컬 설정
+.vercel/
+
+# 의존성/생성물 (현재는 없지만 안전 차원)
+node_modules/

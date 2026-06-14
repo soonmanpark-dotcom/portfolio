@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>김수민 · Marketing Specialist</title>
+<meta name="description" content="김수민 — B2B SaaS 그로스와 퍼포먼스 마케팅을 다루는 마케팅 스페셜리스트의 포트폴리오" />
+<style>
+  :root {
+    --teal: #16877a;
+    --teal-dark: #0f6358;
+    --teal-light: #e7f3f1;
+    --ink: #1c2b29;
+    --muted: #5f6f6c;
+    --line: #e3e9e7;
+    --bg: #f7faf9;
+    --white: #ffffff;
+    --shadow: 0 6px 24px rgba(15, 99, 88, 0.08);
+    --body-text: #33433f;
+  }
+
+  /* ===== Dark mode ===== */
+  html[data-theme="dark"] {
+    --teal: #2ec4b0;
+    --teal-dark: #21a596;
+    --teal-light: #14302c;
+    --ink: #e8efed;
+    --muted: #9bb0ab;
+    --line: #2a3a37;
+    --bg: #0f1a18;
+    --white: #16211f;
+    --shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+    --body-text: #c4d2ce;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body { transition: background-color 0.25s, color 0.25s; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic",
+      "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  /* ===== Nav ===== */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(247, 250, 249, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  nav .brand { font-weight: 800; font-size: 1.05rem; color: var(--teal-dark); }
+  nav ul { list-style: none; display: flex; gap: 28px; }
+  nav ul a {
+    font-size: 0.92rem; font-weight: 600; color: var(--muted);
+    transition: color 0.2s;
+  }
+  nav ul a:hover { color: var(--teal); }
+  .nav-right { display: flex; align-items: center; gap: 28px; }
+  #theme-toggle {
+    width: 38px; height: 38px; flex: none; cursor: pointer;
+    border: 1px solid var(--line); border-radius: 999px;
+    background: var(--white); color: var(--ink);
+    font-size: 1.05rem; line-height: 1;
+    display: grid; place-items: center;
+    transition: border-color 0.2s, transform 0.15s, background-color 0.25s;
+  }
+  #theme-toggle:hover { border-color: var(--teal); transform: translateY(-1px); }
+  @media (max-width: 640px) { nav ul { display: none; } }
+
+  /* ===== Hero ===== */
+  header.hero {
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+    color: #fff; padding: 88px 0 96px;
+  }
+  .hero .eyebrow {
+    display: inline-block; font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    background: rgba(255,255,255,0.16); padding: 6px 14px; border-radius: 999px;
+    margin-bottom: 22px;
+  }
+  .hero h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); font-weight: 800; line-height: 1.15; }
+  .hero h1 span { display: block; font-weight: 500; font-size: 0.5em; opacity: 0.9; margin-top: 10px; }
+  .hero p.lead { margin-top: 24px; max-width: 620px; font-size: 1.08rem; opacity: 0.95; }
+  .hero .cta { margin-top: 36px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 13px 26px; border-radius: 10px;
+    font-weight: 700; font-size: 0.95rem; transition: transform 0.15s, box-shadow 0.2s;
+  }
+  .btn-primary { background: #fff; color: var(--teal-dark); }
+  .btn-ghost { border: 1.5px solid rgba(255,255,255,0.55); color: #fff; }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+
+  /* ===== Section ===== */
+  section { padding: 76px 0; }
+  .section-tag {
+    color: var(--teal); font-weight: 700; font-size: 0.85rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .section-title { font-size: 1.9rem; font-weight: 800; margin: 8px 0 36px; }
+
+  /* ===== About / Stats ===== */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 34px; }
+  .stat {
+    background: var(--white); border: 1px solid var(--line); border-radius: 14px;
+    padding: 24px 18px; text-align: center; box-shadow: var(--shadow);
+  }
+  .stat .num { font-size: 1.9rem; font-weight: 800; color: var(--teal); }
+  .stat .label { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+  @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+  /* ===== Timeline (Career) ===== */
+  .timeline { position: relative; margin-left: 8px; }
+  .timeline::before {
+    content: ""; position: absolute; left: 7px; top: 6px; bottom: 6px;
+    width: 2px; background: var(--line);
+  }
+  .item { position: relative; padding: 0 0 38px 38px; }
+  .item:last-child { padding-bottom: 0; }
+  .item::before {
+    content: ""; position: absolute; left: 0; top: 6px;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--teal); border: 3px solid var(--bg);
+  }
+  .item .period { font-size: 0.85rem; font-weight: 700; color: var(--teal); }
+  .item h3 { font-size: 1.2rem; margin: 4px 0 2px; }
+  .item .org { color: var(--muted); font-size: 0.95rem; margin-bottom: 12px; }
+  .item ul { list-style: none; }
+  .item ul li { position: relative; padding-left: 18px; margin-bottom: 7px; color: var(--body-text); font-size: 0.96rem; }
+  .item ul li::before {
+    content: ""; position: absolute; left: 0; top: 11px;
+    width: 6px; height: 6px; border-radius: 50%; background: var(--teal);
+  }
+
+  /* ===== Skills ===== */
+  .skills { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip {
+    background: var(--teal-light); color: var(--teal-dark);
+    padding: 8px 16px; border-radius: 999px; font-size: 0.9rem; font-weight: 600;
+  }
+
+  /* ===== Contact ===== */
+  #contact { background: var(--white); border-top: 1px solid var(--line); }
+  .contact-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 30px; }
+  @media (max-width: 640px) { .contact-grid { grid-template-columns: 1fr; } }
+  .contact-card {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--bg); border: 1px solid var(--line); border-radius: 14px;
+    padding: 18px 20px; transition: border-color 0.2s, transform 0.15s;
+  }
+  .contact-card:hover { border-color: var(--teal); transform: translateY(-2px); }
+  .contact-card .ico {
+    width: 42px; height: 42px; flex: none; border-radius: 10px;
+    background: var(--teal-light); color: var(--teal);
+    display: grid; place-items: center; font-size: 1.2rem;
+  }
+  .contact-card .k { font-size: 0.78rem; color: var(--muted); }
+  .contact-card .v { font-weight: 700; font-size: 0.98rem; word-break: break-all; }
+
+  /* ===== Footer ===== */
+  footer { text-align: center; padding: 34px 0; color: var(--muted); font-size: 0.85rem; }
+</style>
+<script>
+  // 저장된 테마를 페이지 렌더 전에 즉시 적용 (깜빡임 방지)
+  (function () {
+    try {
+      if (localStorage.getItem("theme") === "dark") {
+        document.documentElement.dataset.theme = "dark";
+      }
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">김수민</div>
+    <div class="nav-right">
+      <ul>
+        <li><a href="#about">소개</a></li>
+        <li><a href="#career">경력</a></li>
+        <li><a href="#skills">스킬</a></li>
+        <li><a href="#contact">연락처</a></li>
+      </ul>
+      <button id="theme-toggle" type="button" aria-label="라이트/다크 모드 전환" title="라이트/다크 모드 전환">
+        <span class="t-icon">🌙</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Marketing Specialist</span>
+    <h1>김수민
+      <span>데이터로 성장을 설계하는 마케터</span>
+    </h1>
+    <p class="lead">
+      B2B SaaS 그로스와 퍼포먼스 마케팅을 중심으로, 광고·콘텐츠·데이터 분석을
+      아우르는 풀퍼널 마케팅을 만듭니다. AI 도구를 활용해 마케팅 생산성을 끌어올리는
+      일에 관심이 많습니다.
+    </p>
+    <div class="cta">
+      <a class="btn btn-primary" href="#contact">연락하기</a>
+      <a class="btn btn-ghost" href="#career">경력 보기</a>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-tag">About</div>
+    <h2 class="section-title">자기소개</h2>
+    <p style="max-width:680px; color:var(--body-text); font-size:1.05rem;">
+      안녕하세요, 마케팅 스페셜리스트 <strong>김수민</strong>입니다.
+      한양대학교 경영학과를 졸업하고 DTC 뷰티 브랜드와 B2B SaaS 스타트업에서
+      6년간 마케팅을 담당해 왔습니다. Google·Meta·Naver 광고 운영부터 SEO,
+      콘텐츠, 마케팅 자동화, 어트리뷰션 모델링까지 직접 손으로 만들고 숫자로
+      증명하는 것을 좋아합니다. 최근에는 GPT 기반 콘텐츠 자동화 파이프라인을
+      설계해 팀의 산출량을 3배로 늘렸습니다.
+    </p>
+
+    <div class="stats">
+      <div class="stat"><div class="num">6년+</div><div class="label">마케팅 경력</div></div>
+      <div class="stat"><div class="num">4.2x</div><div class="label">평균 ROAS</div></div>
+      <div class="stat"><div class="num">38%</div><div class="label">CPL 절감</div></div>
+      <div class="stat"><div class="num">12만</div><div class="label">SNS 팔로워 성장</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="career" style="background:var(--white); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="section-tag">Experience</div>
+    <h2 class="section-title">경력 사항</h2>
+
+    <div class="timeline">
+      <div class="item">
+        <div class="period">2022.03 – 현재</div>
+        <h3>마케팅 매니저</h3>
+        <div class="org">주식회사 테크노바 · B2B SaaS 스타트업 (시리즈 A, 임직원 50명)</div>
+        <ul>
+          <li>퍼포먼스 마케팅 총괄 — Google/Meta/Naver 광고 월 5천만원 규모 운영</li>
+          <li>유입 CPL 38% 절감(6개월), 유료 전환율 2.1% → 3.4% 개선</li>
+          <li>SEO 전략 수립 — 핵심 키워드 27개 10위권 진입, 오가닉 트래픽 2.3배 증가</li>
+          <li>HubSpot 기반 마케팅 자동화 워크플로우 12종 구축 및 주간 리포팅</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="period">2019.03 – 2022.02</div>
+        <h3>마케팅 어시스턴트</h3>
+        <div class="org">주식회사 리브랜드 · DTC 뷰티 브랜드 (연매출 50억 규모)</div>
+        <ul>
+          <li>인스타그램 브랜드 계정 운영 — 팔로워 2.5만 → 12만 증가 (3년)</li>
+          <li>인플루언서 마케팅 캠페인 14건 진행, 평균 ROAS 4.2배</li>
+          <li>신제품 런칭 캠페인 6건 기획·집행 (시즌 한정 라인 포함)</li>
+          <li>프리랜서 디자이너 3명 오케스트레이션 및 일정 관리</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="period">2018.06 – 2018.12</div>
+        <h3>마케팅 인턴</h3>
+        <div class="org">스튜디오 메이즈 · 디지털 마케팅 에이전시</div>
+        <ul>
+          <li>중소 브랜드 5개사 SNS 콘텐츠 캘린더 기획 및 운영 보조</li>
+          <li>네이버 블로그·키워드 광고 성과 리포트 주간 작성</li>
+          <li>경쟁사 벤치마킹 및 시장 조사 자료 정리로 캠페인 기획 지원</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-tag">Skills</div>
+    <h2 class="section-title">보유 스킬</h2>
+    <div class="skills">
+      <span class="chip">Google Ads</span>
+      <span class="chip">Meta Ads</span>
+      <span class="chip">Naver Search</span>
+      <span class="chip">Kakao Moment</span>
+      <span class="chip">GA4</span>
+      <span class="chip">Amplitude</span>
+      <span class="chip">Looker Studio</span>
+      <span class="chip">Tableau</span>
+      <span class="chip">HubSpot</span>
+      <span class="chip">Mailchimp</span>
+      <span class="chip">Zapier</span>
+      <span class="chip">SEO · Ahrefs</span>
+      <span class="chip">카피라이팅</span>
+      <span class="chip">Figma</span>
+      <span class="chip">SQL</span>
+      <span class="chip">Python (pandas)</span>
+    </div>
+
+    <h2 class="section-title" style="font-size:1.3rem; margin-top:48px;">자격증 &amp; 교육</h2>
+    <div class="skills">
+      <span class="chip">Google Ads Certified (2024)</span>
+      <span class="chip">GAIQ (2023)</span>
+      <span class="chip">HubSpot Inbound Marketing (2023)</span>
+      <span class="chip">패스트캠퍼스 Growth Marketing 부트캠프 (2020)</span>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="section-tag">Contact</div>
+    <h2 class="section-title">연락처</h2>
+    <p style="color:var(--muted); max-width:560px;">
+      새로운 기회나 협업 제안은 언제든 환영합니다. 아래 채널로 편하게 연락 주세요.
+    </p>
+    <div class="contact-grid">
+      <a class="contact-card" href="mailto:soomin.kim@example.com">
+        <div class="ico">✉️</div>
+        <div><div class="k">이메일</div><div class="v">soomin.kim@example.com</div></div>
+      </a>
+      <a class="contact-card" href="tel:01012345678">
+        <div class="ico">📞</div>
+        <div><div class="k">연락처</div><div class="v">010-1234-5678</div></div>
+      </a>
+      <a class="contact-card" href="https://soomin.example.com" target="_blank" rel="noopener">
+        <div class="ico">🌐</div>
+        <div><div class="k">포트폴리오</div><div class="v">soomin.example.com</div></div>
+      </a>
+      <a class="contact-card" href="https://linkedin.com/in/soomin-kim" target="_blank" rel="noopener">
+        <div class="ico">in</div>
+        <div><div class="k">LinkedIn</div><div class="v">linkedin.com/in/soomin-kim</div></div>
+      </a>
+    </div>
+    <p style="color:var(--muted); margin-top:24px; font-size:0.95rem;">
+      📍 서울특별시 마포구
+    </p>
+  </div>
+</section>
+
+<footer>
+  © 2026 김수민 · Marketing Specialist. All rights reserved.
+</footer>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById("theme-toggle");
+    var icon = btn.querySelector(".t-icon");
+
+    function syncIcon() {
+      var dark = root.dataset.theme === "dark";
+      icon.textContent = dark ? "☀️" : "🌙";
+    }
+
+    syncIcon();
+
+    btn.addEventListener("click", function () {
+      var dark = root.dataset.theme === "dark";
+      if (dark) {
+        delete root.dataset.theme;
+        try { localStorage.setItem("theme", "light"); } catch (e) {}
+      } else {
+        root.dataset.theme = "dark";
+        try { localStorage.setItem("theme", "dark"); } catch (e) {}
+      }
+      syncIcon();
+    });
+  })();
+</script>
+
+</body>
+</html>
